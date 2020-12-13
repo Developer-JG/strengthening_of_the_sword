@@ -5,10 +5,10 @@ print("\nstrengthening of the sword game project\n\n\n")
 
 # 플래이어 클래스
 class player:
-    def __init__(self, sword, money, prevention_item, inventory):
+    def __init__(self, sword, money, prevention, inventory):
         self.sword = sword
         self.money = money
-        self.prevention_item = prevention_item
+        self.prevention = prevention
         self.inventory = {"sword": [], "item": []}
 
 # 일반 아이템 클래스
@@ -22,6 +22,13 @@ class shop_item:
     def __init__(self, name, cost):
         self.name = name
         self.cost = cost
+
+# 조합 아이템 클래스
+class crafting_item:
+    def __init__(self, name, material, material_count):
+        self.name = name
+        self.material = material
+        self.material_count = material_count
 
 # 아이템
 # 일반 아이템
@@ -51,10 +58,21 @@ item_27 = common_item("+25 안 강해보이는 검", 0)
 item_28 = common_item("+26 메두사", 0)
 item_29 = common_item("+27 오딧세이 소드", 0)
 item_30 = common_item("+28 모자이칼", 0)
+# 조합 아이템
+item_31 = crafting_item("깨짐 방지권 1개", item_01, 5)
+item_32 = crafting_item("깨짐 방지권 1개", item_02, 3)
+item_33 = crafting_item("불꽃마검", item_03, 2)
+item_34 = crafting_item("깨짐 방지권 2개", item_04, 3)
+item_35 = crafting_item("투명검", item_05, 2)
+item_36 = crafting_item("깨짐 방지권 4개", item_06, 4)
+item_37 = crafting_item("왕푸야샤", item_06, 6)
+item_38 = crafting_item("깨짐 방지권 10개", item_07, 6)
+item_39 = crafting_item("깨짐 방지권 9개",item_08 , 3)
 
 item_list_1 = [item_01, item_02, item_03, item_04, item_05, item_06, item_07, item_08]
 item_list_2 = [item_11, item_12, item_13, item_14, item_15, item_16]
 item_list_3 = [item_21, item_22, item_23, item_24, item_25, item_26, item_27, item_28, item_29, item_30]
+item_list_4 = [item_31, item_32, item_33, item_34, item_35, item_36, item_37, item_38, item_39]
 
 # 검 클래스
 class sword:
@@ -197,14 +215,14 @@ def recycle(player_1):
         print("\n" * 9)
         while True:
             print("파괴하기 (홈화면으로) : q / 복구하기 : w\n\n")
-            print(f"깨짐 방지권이 있다면 {player_1.sword.prevention}개를 사용하여 이 '{player_1.sword.name}' 을/를 살릴 수 있습니다.\n나의 깨짐 방지권 개수 : {player_1.prevention_item}\n")
+            print(f"깨짐 방지권이 있다면 {player_1.sword.prevention}개를 사용하여 이 '{player_1.sword.name}' 을/를 살릴 수 있습니다.\n나의 깨짐 방지권 개수 : {player_1.prevention}\n")
             answer = input("= ")
             if answer == "q":
                 drop_item(player_1, "no")
                 break
             elif answer == "w":
-                if player_1.prevention_item >= player_1.sword.prevention:
-                    player_1.prevention_item = player_1.prevention_item - player_1.sword.prevention
+                if player_1.prevention >= player_1.sword.prevention:
+                    player_1.prevention = player_1.prevention - player_1.sword.prevention
                     drop_item(player_1, "yes")
                     print(f"'{player_1.sword.name}' 을/를 성공적으로 복구하였습니다.\n")
                     break
@@ -252,7 +270,7 @@ def buy(player_1, object):
     while True:
         type = 0
         print("{0:-^25}".format(" 구매 "))
-        print("({0}) : {1}".format(item_list_2[object].name, item_list_2[object].cost))
+        print(f"{item_list_2[object].name} : {item_list_2[object].cost}")
 
         if object == 0 or object == 1:
             print("\n돌아가기 : q / [구매하려면 수량 입력]\n")
@@ -274,9 +292,9 @@ def buy(player_1, object):
                     if player_1.money >= item_list_2[object].cost * int(answer):
                         player_1.money = player_1.money - (item_list_2[object].cost * int(answer))
                         if object == 0:
-                            player_1.prevention_item = player_1.prevention_item + int(answer)
+                            player_1.prevention = player_1.prevention + int(answer)
                         elif object == 1:
-                            player_1.prevention_item = player_1.prevention_item + (int(answer) * 3)
+                            player_1.prevention = player_1.prevention + (int(answer) * 3)
                         print(f"\n({item_list_2[object].name}) {int(answer)}개를 성공적으로 구매하였습니다.\n")
                         break
                     else:
@@ -304,19 +322,90 @@ def buy(player_1, object):
         else:
             print("\n다시 입력해 주십시오.\n\n")
 
+# 조합
+def crafting(player_1,object):
+    print("\n" * 9)
+
+    while True:
+        type = 0
+        print("{0:-^25}".format(" 조합 "))
+        print(f"{item_list_4[object].name} : {item_list_4[object].material.name} X {item_list_4[object].material_count}")
+
+        if object == 0 or object == 1 or object == 3 or object == 5 or object == 7 or object == 8:
+            print("\n돌아가기 : q / [구매하려면 수량 입력]\n")
+            type = 1
+        elif object == 2 or object == 4 or object == 6:
+            print("\n돌아가기 : q / 구매하기 : w\n")
+            type = 2
+
+        answer = input("= ")
+        if answer == "q":
+            print("\n" * 2)
+            break
+        elif type == 1:
+            try:
+                if int(answer) == 0:
+                    print("\n" * 2)
+                    break
+                elif 0 < int(answer):
+                    if player_1.inventory["item"][player_1.inventory["item"].index(item_list_4[object].material)].count >= item_list_4[object].material_count * int(answer):
+                        player_1.inventory["item"][player_1.inventory["item"].index(item_list_4[object].material)].count = \
+                            player_1.inventory["item"][player_1.inventory["item"].index(item_list_4[object].material)].count - item_list_4[object].material_count * int(answer)
+                        if object == 0 or object == 1:
+                            player_1.prevention = player_1.prevention + (1 * int(answer))
+                        elif object == 3:
+                            player_1.prevention = player_1.prevention + (2 * int(answer))
+                        elif object == 5:
+                            player_1.prevention = player_1.prevention + (4 * int(answer))
+                        elif object == 7:
+                            player_1.prevention = player_1.prevention + (10 * int(answer))
+                        elif object == 8:
+                            player_1.prevention = player_1.prevention + (9 * int(answer))
+                        print(f"\n({item_list_4[object].name}) {int(answer)}개를 성공적으로 구매하였습니다.\n")
+                        break
+                    else:
+                        print("\n재료가 부족합니다.\n\n")
+                elif 0 > int(answer):
+                    print("\n올바른 양수값을 입력하여 주십시오.\n\n")
+            except:
+                print("\n다시 입력해 주십시오.\n\n")
+        elif type == 2:
+            if answer == "w":
+                if player_1.inventory["item"][player_1.inventory["item"].index(item_list_4[object].material)].count >= item_list_4[object].material_count:
+                    player_1.inventory["item"][player_1.inventory["item"].index(item_list_4[object].material)].count = \
+                    player_1.inventory["item"][player_1.inventory["item"].index(item_list_4[object].material)].count - item_list_4[object].material_count
+                    if object == 2:
+                        player_1.sword = sword_13
+                    elif object == 4:
+                        player_1.sword = sword_16
+                    elif object == 6:
+                        player_1.sword = sword_19
+                    print(f"\n{item_list_4[object].name}을/를 성공적으로 구매하였습니다.\n")
+                    break
+                else:
+                    print("\n재료가 부족합니다.\n\n")
+        else:
+            print("\n다시 입력해 주십시오.\n\n")
+
 # 상점
-def shop(player_1):
+def shop(player_1,action):
     plag = 0
     n = 3
     print("\n" * 9)
 
     while True:
-        print("{0:=^25}".format(" 상점 (" + str(plag + 1) + " 페이지) "))
+        if action == "buy":
+            print("{0:=^25}".format(" 상점 (" + str(plag + 1) + " 페이지) "))
+        elif action == "crafting":
+            print("{0:=^25}".format(" 조합소 (" + str(plag + 1) + " 페이지) "))
         j = plag * n
         for i in range(plag * (n - 1), plag * (n - 1) + n):
             j = j + 1
             try:
-                print("{0}. {1} : {2}".format(j, item_list_2[i].name, item_list_2[i].cost))
+                if action == "buy":
+                    print(f"{j}. {item_list_2[plag + i].name} : {item_list_2[plag + i].cost}")
+                elif action == "crafting":
+                    print(f"{j}. {item_list_4[plag + i].name} : {item_list_4[plag + i].material.name} X {item_list_4[plag + i].material_count}")
             except:
                 print()
 
@@ -327,20 +416,38 @@ def shop(player_1):
             print("\n" * 2)
             break
         elif answer == "w":
-            if plag == 0:
-                plag = 1
-            else:
-                plag = plag - 1
+            if action == "buy":
+                if plag == 0:
+                    plag = 1
+                else:
+                    plag = plag - 1
+            elif action == "crafting":
+                if plag == 0:
+                    plag = 2
+                else:
+                    plag = plag - 1
             print("\n" * 2)
         elif answer == "e":
-            if plag == 1:
-                plag = 0
-            else:
-                plag = plag + 1
+            if action == "buy":
+                if plag == 1:
+                    plag = 0
+                else:
+                    plag = plag + 1
+            elif action == "crafting":
+                if plag == 2:
+                    plag = 0
+                else:
+                    plag = plag + 1
             print("\n" * 2)
-        elif 1 <= int(answer) <= len(item_list_2):
-            buy(player_1, int(answer) - 1)
-            break
+        elif action == "buy" or action == "crafting":
+            try:
+                if action == "buy" and 1 <= int(answer) <= len(item_list_2):
+                    buy(player_1, int(answer) - 1)
+                elif action == "crafting" and 1 <= int(answer) <= len(item_list_4):
+                    crafting(player_1, int(answer) - 1)
+                break
+            except:
+                pass
         else:
             print("\n다시 입력해 주십시오.\n")
 
@@ -408,11 +515,6 @@ def inventory(player_1):
         else:
             print("\n다시 입력해 주십시오.\n")
 
-# 조합소
-def creating(player_1):
-    # !!!!!!!!!!!!
-    pass
-
 # 보관하기
 def keep(player_1):
     if player_1.sword == sword_19:
@@ -466,10 +568,10 @@ def main():
 
         if player_1.sword.reinforcement_cost == 0 and player_1.sword != sword_28:
             print(f"{player_1.sword.name}\n강화 성공률 : {player_1.sword.success_rate}% / 깅화재료 : ({player_1.sword.required_item.name} X {player_1.sword.required_item_count}) 판매가격 : {player_1.sword.selling_price} \
-                  \n방지권 : {player_1.prevention_item} 돈 : {player_1.money}")
+                  \n방지권 : {player_1.prevention} 돈 : {player_1.money}")
         else:
             print(f"{player_1.sword.name}\n강화 성공률 : {player_1.sword.success_rate}% / 깅화비용 : {player_1.sword.reinforcement_cost} 판매가격 : {player_1.sword.selling_price} \
-                \n방지권 : {player_1.prevention_item} 돈 : {player_1.money}")
+                \n방지권 : {player_1.prevention} 돈 : {player_1.money}")
 
         answer = input("= ")
         if player_1.sword != sword_29:
@@ -477,7 +579,7 @@ def main():
                 reinforcement(player_1)
             elif answer == "w":
                 if player_1.sword == sword_0:
-                    shop(player_1)
+                    shop(player_1, "buy")
                 elif player_1.sword != sword_28:
                     sale(player_1)
                 else:
@@ -486,7 +588,7 @@ def main():
                 if player_1.sword == sword_0:
                     inventory(player_1)
                 elif player_1.sword == sword_1:
-                    creating(player_1)
+                    shop(player_1, "crafting")
                 elif player_1.sword in sword_list_03:
                     keep(player_1)
                 else:
