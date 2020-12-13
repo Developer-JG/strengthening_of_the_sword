@@ -1,7 +1,7 @@
 # strengthening_of_the_sword
 ### Made of Python, a hugely popular flash game.
 
-lastest Renewals : 2020/12/11 (under development)
+lastest Renewals : 2020/12/13 (Development completed)
 
 # History
 
