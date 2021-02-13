@@ -1,4 +1,9 @@
 # strengthening_of_the_sword
+
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![python3.7](https://img.shields.io/badge/python-3.7.2-brightgreen)
+![license](https://img.shields.io/badge/license-CC--BY--NC--SA-orange)
+
 ### Made of Python, a hugely popular flash game.
 
 lastest Renewals : 2020/12/13
