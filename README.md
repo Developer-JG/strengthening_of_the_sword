@@ -6,7 +6,7 @@
 
 ### Made of Python, a hugely popular flash game.
 
-lastest Renewals : 2020/12/13
+lastest Renewals : 2021/02/12
 
 # History
 
