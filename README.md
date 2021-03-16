@@ -1,6 +1,5 @@
 # strengthening_of_the_sword
 
-[![Build Status](https://travis-ci.com/Developer-JG/strengthening_of_the_sword.svg?branch=master)](https://travis-ci.com/Developer-JG/strengthening_of_the_sword)
 ![python3.7](https://img.shields.io/badge/python-3.7.2-brightgreen)
 ![license](https://img.shields.io/badge/license-CC--BY--NC--SA-orange)
 
